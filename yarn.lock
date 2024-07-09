@@ -2627,13 +2627,6 @@
     axios "^1.7.2"
     viem "^2.17.2"
 
-"@zk-email/ts-sdk@../zk-email-wallet/packages/ts-sdk/":
-  version "0.1.0"
-  dependencies:
-    "@types/axios" "^0.14.0"
-    axios "^1.7.2"
-    viem "^2.17.2"
-
 abitype@0.9.8:
   version "0.9.8"
   resolved "https://registry.yarnpkg.com/abitype/-/abitype-0.9.8.tgz#1f120b6b717459deafd213dfbf3a3dd1bf10ae8c"
@@ -3750,6 +3743,11 @@ dot-case@^3.0.4:
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
+
+dotenv@^16.4.5:
+  version "16.4.5"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
+  integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
 
 duplexify@^4.1.2:
   version "4.1.3"
@@ -6830,6 +6828,11 @@ reusify@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
+
+reverse-mirage@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/reverse-mirage/-/reverse-mirage-1.1.0.tgz#6556cff644312e6a45b3d6c28f9d70aa86b6f66a"
+  integrity sha512-cA1O7GR0pn4rMFoaiEG7Skms9GenuW91DtCxeR5hphyNhH90eowV4RmUVlVPVS11CPkezm/iUjnCfmxlHri05w==
 
 rimraf@^2.6.3:
   version "2.7.1"

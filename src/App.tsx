@@ -1,7 +1,8 @@
 // src/App.tsx
 import React from 'react';
-import LandingPage from './routes/LandingPage';
 import WaitingPage from './routes/WaitingPage';
+import LandingPage from './routes/LandingPage';
+import SendPage from './routes/Send';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/waiting",
     element: <WaitingPage />
+  },
+  {
+    path: "/send",
+    element: <SendPage />
   }
 ]);
 

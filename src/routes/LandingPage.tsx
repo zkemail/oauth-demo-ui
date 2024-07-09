@@ -1,22 +1,20 @@
 // src/LandingPage.tsx
 import React, { useState, CSSProperties } from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAppState } from '../StateContext';
 import OauthClient from "@zk-email/ts-sdk/src/oauthClient";
 import { Address, GetContractReturnType, PrivateKeyAccount, PublicClient, WalletClient, getContract, encodePacked } from 'viem'
 
 const LandingPage: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
+  // const [email, setEmail] = useState<string>('');
+  // const [username, setUsername] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<'signup' | 'signin' | null>(`signup`);
-  const { oauthClient } = useAppState();
-
-
-
+  const { userEmailAddr, setUserEmailAddr, username, setUsername, isFilled, setIsFilled, oauthClient, setOauthClient, requestId, setRequestId, isActivated, setIsActivated } = useAppState();
+  const navigate = useNavigate();
 
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    setUserEmailAddr(e.target.value);
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,13 +25,25 @@ const LandingPage: React.FC = () => {
     setSelectedOption(option);
   };
 
+  const handleNextClick = () => {
+    setIsFilled(true);
+    navigate('/waiting');
+    // const requestId = await oauthClient?.setup(email, username, null, null);
+    // if (requestId != null) {
+    //   setRequestId(requestId);
+    // }
+  };
+
+
+
   const isFormValid = () => {
     if (selectedOption === 'signup') {
-      return email !== '' && username !== '';
+      return userEmailAddr !== '' && username !== '';
     } else {
-      return email !== '';
+      return userEmailAddr !== '';
     }
   };
+
 
 
   const styles: { [key: string]: CSSProperties } = {
@@ -107,7 +117,7 @@ const LandingPage: React.FC = () => {
       <input
         type="email"
         placeholder="Enter your email address"
-        value={email}
+        value={userEmailAddr}
         onChange={handleEmailChange}
         style={styles.input}
       />
@@ -120,7 +130,7 @@ const LandingPage: React.FC = () => {
           style={styles.input}
         />
       )}
-      <button
+      {/* <button
         style={{
           ...styles.button,
           ...(isFormValid() ? {} : styles.disabledButton),
@@ -128,10 +138,21 @@ const LandingPage: React.FC = () => {
         disabled={!isFormValid()}
       >
         {isFormValid() ? (
-          <Link to={`waiting`} style={styles.link}>Next</Link>
+          <Link to={`waiting`} style={styles.link} onClick={ }>Next</Link>
         ) : (
           <span style={styles.link}>Next</span>
         )}
+      </button> */}
+      <button
+        onClick={handleNextClick}
+        style={{
+          ...styles.button,
+          ...(isFormValid() ? {} : styles.disabledButton),
+          pointerEvents: isFormValid() ? 'auto' : 'none',
+        }}
+        disabled={!isFormValid()}
+      >
+        Next
       </button>
     </div >
   );

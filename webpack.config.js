@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { DefinePlugin } = require('webpack');
+const dotenv = require('dotenv');
+dotenv.config();
 
 module.exports = {
   entry: './src/index.tsx',
@@ -11,27 +14,27 @@ module.exports = {
   mode: 'development',
   devServer: {
     static: {
-        directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, 'public'),
     },
   },
   module: {
     rules: [
-        {
-          test: /\.(ts|tsx)$/, // Add TypeScript support
-          exclude: /node_modules/,
-          use: 'ts-loader', // Use ts-loader for TypeScript files
+      {
+        test: /\.(ts|tsx)$/, // Add TypeScript support
+        exclude: /node_modules/,
+        use: 'ts-loader', // Use ts-loader for TypeScript files
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
         },
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-          },
-        },
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
-        },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   resolve: {
@@ -42,5 +45,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
+    new DefinePlugin({
+      'process.env': JSON.stringify(process.env)
+    })
   ],
 };
