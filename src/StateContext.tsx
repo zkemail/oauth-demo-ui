@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import OauthClient from "@zk-email/ts-sdk/dist/oauthClient";
+import { OauthClient } from "@zk-email/oauth-sdk";
 import { Address, GetContractReturnType, PrivateKeyAccount, PublicClient, createPublicClient, WalletClient, getContract, encodePacked, http, } from 'viem'
 import { baseSepolia, mainnet, base } from "viem/chains";
 

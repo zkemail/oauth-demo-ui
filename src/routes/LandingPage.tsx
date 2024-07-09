@@ -2,8 +2,6 @@
 import React, { useState, CSSProperties } from 'react';
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAppState } from '../StateContext';
-import OauthClient from "@zk-email/ts-sdk/src/oauthClient";
-import { Address, GetContractReturnType, PrivateKeyAccount, PublicClient, WalletClient, getContract, encodePacked } from 'viem'
 
 const LandingPage: React.FC = () => {
   // const [email, setEmail] = useState<string>('');

@@ -10,7 +10,7 @@
     "@types/node": "^16.18.101",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@zk-email/ts-sdk": "../zk-email-wallet/packages/ts-sdk",
+    "@zk-email/oauth-sdk": "^0.1.0",
     "dotenv": "^16.4.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
