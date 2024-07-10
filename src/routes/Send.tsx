@@ -1,5 +1,5 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { useAppState } from '../StateContext';
+import { OauthClientCache, PageState, useAppState } from '../StateContext';
 import { Address, GetContractReturnType, PrivateKeyAccount, PublicClient, WalletClient, getContract, encodePacked, encodeFunctionData } from 'viem'
 import { publicActionReverseMirage, amountToNumber } from 'reverse-mirage'
 import {
@@ -8,11 +8,14 @@ import {
     createAmountFromRaw,
 } from 'reverse-mirage'
 import { erc20Abi } from 'viem'
+import CircularProgress from '@mui/joy/CircularProgress';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
 
 
 
 const SendPage: React.FC = () => {
-    const { oauthClient } = useAppState();
+    const { oauthClient, setOauthClient, pageState, setPageState, requestId, setRequestId, userEmailAddr, username } = useAppState();
     const [amountStr, setAmountStr] = useState<string>('');
     const [amount, setAmount] = useState<bigint>(0n);
     const [token, setToken] = useState<string>('TEST');
@@ -22,6 +25,8 @@ const SendPage: React.FC = () => {
     const [balanceOfTest, setBalanceOfTest] = useState<bigint>(100n * baseAmount);
     const [allowanceOfTest, setAllowanceOfTest] = useState<bigint>(10n * baseAmount);
     const [isClicked, setIsClicked] = useState<boolean>(false);
+    // const [isExecuting, setIsExecuting] = useState<boolean>(false);
+    const [txInfos, setTxInfos] = useState<[string, string, string][]>([]);
 
     const testTokenAddr = process.env.REACT_APP_TEST_TOKEN as Address | null;
     if (!testTokenAddr) {
@@ -49,6 +54,31 @@ const SendPage: React.FC = () => {
         // const txHash = await oauthClient?.oauthExecuteTx()
     };
 
+    // useEffect(() => {
+
+    // }, []);
+
+    useEffect(() => {
+        const waiting = async () => {
+            if (requestId !== null) {
+                console.log(requestId);
+                await oauthClient?.waitEpheAddrActivated(requestId);
+                setOauthClient(oauthClient);
+                setRequestId(null);
+                setPageState(PageState.send);
+                const newCache: OauthClientCache = {
+                    userEmailAddr,
+                    username,
+                    userWalletAddr: oauthClient.getWalletAddress() as Address,
+                    ephePrivateKey: oauthClient.getEphePrivateKey(),
+                    epheAddrNonce: oauthClient.getEpheAddrNonce() as string,
+                };
+                localStorage.setItem('oauthClient', JSON.stringify(newCache));
+            }
+        }
+        waiting();
+    }, [requestId]);
+
     useEffect(() => {
         if (!isClicked) {
             return;
@@ -62,6 +92,7 @@ const SendPage: React.FC = () => {
             });
             const txHash = await oauthClient?.oauthExecuteTx(testTokenAddr, data, 0n, amount);
             console.log('txHash:', txHash);
+            setTxInfos([...txInfos, [txHash, amountStr, to]]);
             const newBalance = balanceOfTest - amount;
             setBalanceOfTest(newBalance);
             const newAllowance = allowanceOfTest - amount;
@@ -124,13 +155,30 @@ const SendPage: React.FC = () => {
         },
     };
 
-    return (
+    const Loading = () => (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'fixed',
+            top: '0',
+            right: '0',
+            bottom: '0',
+            left: '0'
+        }}>
+            <CircularProgress size="lg" />
+            <p>Loading until your sign-up/sign-in is completed.</p>
+        </div>
+    );
+
+    const Sending = () => (
         <div style={styles.container}>
             <div style={styles.address}>
                 Wallet address: {`0x${oauthClient?.userWallet?.address}` ?? 'Not available'}
             </div>
             <div style={styles.info}>Balance: {_bigIntToAmountStr(balanceOfTest, decimals)} TEST</div>
-            <div style={styles.info}>Remaining Allowance: {_bigIntToAmountStr(allowanceOfTest, decimals)}</div>
+            <div style={styles.info}>Remaining Allowance: {_bigIntToAmountStr(allowanceOfTest, decimals)} TEST</div>
             <input
                 type="text"
                 placeholder="Enter recipient address"
@@ -153,7 +201,21 @@ const SendPage: React.FC = () => {
             <button onClick={handleSendClick} style={styles.button}>
                 Send
             </button>
+            {isClicked && <p style={{ color: 'limegreen', fontStyle: 'italic' }}>A transaction is sent!</p>}
+            <div>
+                Executed Transactions.
+                <List>
+                    {txInfos.map(([txHash, amount, to], index) => (
+                        <ListItem key={index}><a href={`https://base-sepolia.blockscout.com/tx/${txHash}`}>Sent {amount} "TEST" to {to}</a></ListItem>
+                    ))}
+                </List>
+            </div>
 
+        </div>
+    );
+    return (
+        <div>
+            {pageState === PageState.send ? <Sending /> : <Loading />}
         </div>
     );
 };

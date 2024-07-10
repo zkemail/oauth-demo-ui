@@ -10,12 +10,33 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
   mode: 'development',
   devServer: {
     static: {
       directory: path.join(__dirname, 'public'),
     },
+    // proxy: {
+    //   '/api': {
+    //     target: process.env.REACT_APP_RELAYER_HOST,
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/api': '/api',
+    //     },
+    //     // onProxyReq: (proxyReq, req, res) => {
+    //     //   proxyReq.setHeader('Origin', 'https://frontend.com');
+    //     // },
+    //   }
+    // }
+    // before: function (app, server, compiler) {
+    //   app.use((req, res, next) => {
+    //     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    //     res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+    //     res.setHeader("Access-Control-Allow-Origin", "*");
+    //     next();
+    //   });
+    // },
   },
   module: {
     rules: [
@@ -39,6 +60,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'], // Add .ts and .tsx extensions
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   plugins: [
     new CleanWebpackPlugin(),

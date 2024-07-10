@@ -1,6 +1,6 @@
 // src/App.tsx
 import React from 'react';
-import WaitingPage from './routes/WaitingPage';
+// import WaitingPage from './routes/WaitingPage';
 import LandingPage from './routes/LandingPage';
 import SendPage from './routes/Send';
 import {
@@ -14,10 +14,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <LandingPage />
   },
-  {
-    path: "/waiting",
-    element: <WaitingPage />
-  },
+  // {
+  //   path: "/waiting",
+  //   element: <WaitingPage />
+  // },
   {
     path: "/send",
     element: <SendPage />
@@ -35,3 +35,4 @@ const App: React.FC = () => {
 }
 
 export default App;
+

@@ -1,13 +1,14 @@
 // src/LandingPage.tsx
-import React, { useState, CSSProperties } from 'react';
+import React, { useState, CSSProperties, useEffect } from 'react';
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import { useAppState } from '../StateContext';
+import { useAppState, PageState } from '../StateContext';
 
 const LandingPage: React.FC = () => {
   // const [email, setEmail] = useState<string>('');
   // const [username, setUsername] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<'signup' | 'signin' | null>(`signup`);
-  const { userEmailAddr, setUserEmailAddr, username, setUsername, isFilled, setIsFilled, oauthClient, setOauthClient, requestId, setRequestId, isActivated, setIsActivated } = useAppState();
+  const [isFilled, setIsFilled] = useState<boolean>(false);
+  const { userEmailAddr, setUserEmailAddr, username, setUsername, pageState, setPageState, oauthClient, setOauthClient, requestId, setRequestId } = useAppState();
   const navigate = useNavigate();
 
 
@@ -25,12 +26,32 @@ const LandingPage: React.FC = () => {
 
   const handleNextClick = () => {
     setIsFilled(true);
-    navigate('/waiting');
+    setPageState(PageState.waiting);
+    // navigate('/send');
     // const requestId = await oauthClient?.setup(email, username, null, null);
     // if (requestId != null) {
     //   setRequestId(requestId);
     // }
   };
+
+  useEffect(() => {
+    const setup = async () => {
+      if (!isFilled) {
+        return;
+      }
+      const requestId = await oauthClient?.setup(userEmailAddr, username, null, [[10, "TEST"]]);
+      setOauthClient(oauthClient);
+      setRequestId(requestId);
+      setIsFilled(false);
+    };
+    setup();
+  }, [isFilled, userEmailAddr, username]);
+
+  useEffect(() => {
+    if (pageState === PageState.waiting || pageState === PageState.send) {
+      navigate('/send');
+    }
+  }, [pageState]);
 
 
 
