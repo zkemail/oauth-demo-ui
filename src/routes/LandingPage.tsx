@@ -39,6 +39,7 @@ const LandingPage: React.FC = () => {
       if (!isFilled) {
         return;
       }
+      console.log(userEmailAddr, username, null, [[10, "TEST"]])
       const requestId = await oauthClient?.setup(userEmailAddr, username, null, [[10, "TEST"]]);
       setOauthClient(oauthClient);
       setRequestId(requestId);
