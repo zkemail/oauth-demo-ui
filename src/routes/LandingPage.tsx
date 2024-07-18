@@ -1,16 +1,30 @@
 // src/LandingPage.tsx
-import React, { useState, CSSProperties, useEffect } from 'react';
+import React, { useState, CSSProperties, useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import { useAppState, PageState } from '../StateContext';
+import { useAppState, PageState } from "../StateContext";
+import { Button, Grid, Tab, TabList, Tabs, Typography } from "@mui/joy";
+import { styles } from "./styles";
 
 const LandingPage: React.FC = () => {
   // const [email, setEmail] = useState<string>('');
   // const [username, setUsername] = useState<string>('');
-  const [selectedOption, setSelectedOption] = useState<'signup' | 'signin' | null>(`signup`);
+  const [selectedOption, setSelectedOption] = useState<
+    "signup" | "signin" | null
+  >(`signup`);
   const [isFilled, setIsFilled] = useState<boolean>(false);
-  const { userEmailAddr, setUserEmailAddr, username, setUsername, pageState, setPageState, oauthClient, setOauthClient, requestId, setRequestId } = useAppState();
+  const {
+    userEmailAddr,
+    setUserEmailAddr,
+    username,
+    setUsername,
+    pageState,
+    setPageState,
+    oauthClient,
+    setOauthClient,
+    requestId,
+    setRequestId,
+  } = useAppState();
   const navigate = useNavigate();
-
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserEmailAddr(e.target.value);
@@ -20,7 +34,7 @@ const LandingPage: React.FC = () => {
     setUsername(e.target.value);
   };
 
-  const handleOptionClick = (option: 'signup' | 'signin') => {
+  const handleOptionClick = (option: "signup" | "signin") => {
     setSelectedOption(option);
   };
 
@@ -39,8 +53,13 @@ const LandingPage: React.FC = () => {
       if (!isFilled) {
         return;
       }
-      console.log(userEmailAddr, username, null, [[10, "TEST"]])
-      const requestId = await oauthClient?.setup(userEmailAddr, username, null, [[10, "TEST"]]);
+      console.log(userEmailAddr, username, null, [[10, "TEST"]]);
+      const requestId = await oauthClient?.setup(
+        userEmailAddr,
+        username,
+        null,
+        [[10, "TEST"]]
+      );
       setOauthClient(oauthClient);
       setRequestId(requestId);
       setIsFilled(false);
@@ -50,131 +69,157 @@ const LandingPage: React.FC = () => {
 
   useEffect(() => {
     if (pageState === PageState.waiting || pageState === PageState.send) {
-      navigate('/send');
+      navigate("/send");
     }
   }, [pageState]);
 
-
-
   const isFormValid = () => {
-    if (selectedOption === 'signup') {
-      return userEmailAddr !== '' && username !== '';
+    if (selectedOption === "signup") {
+      return userEmailAddr !== "" && username !== "";
     } else {
-      return userEmailAddr !== '';
+      return userEmailAddr !== "";
     }
   };
 
+  // const styles: { [key: string]: CSSProperties } = {
+  //   container: {
+  //     display: 'flex',
+  //     flexDirection: 'column',
+  //     alignItems: 'center',
+  //     justifyContent: 'center',
+  //     height: '100vh',
+  //     backgroundColor: '#f0f0f0',
+  //   },
+  //   title: {
+  //     marginBottom: '20px',
+  //   },
+  //   input: {
+  //     padding: '10px',
+  //     fontSize: '16px',
+  //     marginBottom: '10px',
+  //     borderRadius: '5px',
+  //     border: '1px solid #ccc',
+  //   },
+  //   button: {
+  //     padding: '10px 20px',
+  //     fontSize: '16px',
+  //     borderRadius: '5px',
+  //     border: 'none',
+  //     backgroundColor: '#007bff',
+  //     color: '#fff',
+  //     cursor: 'pointer',
+  //     margin: '5px',
 
-
-  const styles: { [key: string]: CSSProperties } = {
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      backgroundColor: '#f0f0f0',
-    },
-    title: {
-      marginBottom: '20px',
-    },
-    input: {
-      padding: '10px',
-      fontSize: '16px',
-      marginBottom: '10px',
-      borderRadius: '5px',
-      border: '1px solid #ccc',
-    },
-    button: {
-      padding: '10px 20px',
-      fontSize: '16px',
-      borderRadius: '5px',
-      border: 'none',
-      backgroundColor: '#007bff',
-      color: '#fff',
-      cursor: 'pointer',
-      margin: '5px',
-
-    },
-    inactiveButton: {
-      backgroundColor: '#cccccc',
-    },
-    disabledButton: {
-      backgroundColor: '#cccccc',
-      cursor: 'not-allowed',
-    },
-    link: {
-      color: '#fff',
-      textDecoration: 'none',
-    },
-  };
+  //   },
+  //   inactiveButton: {
+  //     backgroundColor: '#cccccc',
+  //   },
+  //   disabledButton: {
+  //     backgroundColor: '#cccccc',
+  //     cursor: 'not-allowed',
+  //   },
+  //   link: {
+  //     color: '#fff',
+  //     textDecoration: 'none',
+  //   },
+  // };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Email Oauth Demo</h1>
-      <div>
-        <button
-          onClick={() => handleOptionClick('signup')}
-          style={{
-            ...styles.button,
-            ...(selectedOption === 'signin' ? styles.inactiveButton : {}),
-          }}
-          disabled={selectedOption === 'signup'}
-        >
-          Sign-up
-        </button>
-        <button
-          onClick={() => handleOptionClick('signin')}
-          style={{
-            ...styles.button,
-            ...(selectedOption === 'signup' ? styles.inactiveButton : {}),
-          }}
-          disabled={selectedOption === 'signin'}
-        >
-          Sign-in
-        </button>
-      </div>
-      <input
-        type="email"
-        placeholder="Enter your email address"
-        value={userEmailAddr}
-        onChange={handleEmailChange}
-        style={styles.input}
-      />
-      {selectedOption === 'signup' && (
-        <input
-          type="text"
-          placeholder="Enter your username"
-          value={username}
-          onChange={handleUsernameChange}
-          style={styles.input}
-        />
-      )}
-      {/* <button
+    <Grid
+      container
+      style={{ background: "#F3F4F6", height: "100vh", width: "100vw" }}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
+      <Grid
+        container
+        spacing={4}
         style={{
-          ...styles.button,
-          ...(isFormValid() ? {} : styles.disabledButton),
+          width: "900px",
+          maxWidth: "90vw",
+          height: "500px",
+          overflowY: "scroll",
+          maxHeight: "50vh",
+          border: "1px solid #E4E4E7",
+          borderRadius: 8,
+          background: "white",
+          padding: "1rem",
         }}
-        disabled={!isFormValid()}
       >
-        {isFormValid() ? (
-          <Link to={`waiting`} style={styles.link} onClick={ }>Next</Link>
-        ) : (
-          <span style={styles.link}>Next</span>
-        )}
-      </button> */}
-      <button
-        onClick={handleNextClick}
-        style={{
-          ...styles.button,
-          ...(isFormValid() ? {} : styles.disabledButton),
-          pointerEvents: isFormValid() ? 'auto' : 'none',
-        }}
-        disabled={!isFormValid()}
-      >
-        Next
-      </button>
-    </div >
+        <Grid xs={12}>
+          <Typography textAlign={"center"} level="h2">
+            Email Oauth Demo
+          </Typography>
+        </Grid>
+        <Grid container xs={12}>
+          <Grid xs={12}>
+            <Tabs
+              defaultValue={"signup"}
+              onChange={(event, value) =>
+                setSelectedOption(value as "signup" | "signin" | null)
+              }
+            >
+              <TabList tabFlex={1}>
+                <Tab value="signup">Sign-up</Tab>
+                <Tab value="signin">Sign-in</Tab>
+              </TabList>
+            </Tabs>
+          </Grid>
+          {/* <Grid xs={6}>
+            <Button
+              style={styles.button}
+              fullWidth
+              onClick={() => handleOptionClick("signup")}
+              disabled={selectedOption === "signup"}
+            >
+              Sign-up
+            </Button>
+          </Grid>
+          <Grid xs={6}>
+            <Button
+              style={styles.button}
+              fullWidth
+              onClick={() => handleOptionClick("signin")}
+              disabled={selectedOption === "signin"}
+            >
+              Sign-in
+            </Button>
+          </Grid> */}
+        </Grid>
+        <Grid container spacing={0} xs={12}>
+          <Grid xs={12}>
+            <input
+              type="email"
+              placeholder="Enter your email address"
+              value={userEmailAddr}
+              onChange={handleEmailChange}
+              style={styles.input}
+            />
+          </Grid>
+          <Grid xs={12}>
+            {selectedOption === "signup" && (
+              <input
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={handleUsernameChange}
+                style={styles.input}
+              />
+            )}
+          </Grid>
+        </Grid>
+        <Grid xs={12}>
+          <Button
+            onClick={handleNextClick}
+            style={styles.button}
+            fullWidth
+            disabled={!isFormValid()}
+          >
+            Next
+          </Button>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -21,6 +21,7 @@ import CircularProgress from "@mui/joy/CircularProgress";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import { Button, Grid, IconButton, Typography } from "@mui/joy";
+import { styles } from "./styles";
 
 const SendPage: React.FC = () => {
   const {
@@ -126,34 +127,6 @@ const SendPage: React.FC = () => {
     send();
   }, [loading]);
 
-  const styles: { [key: string]: CSSProperties } = {
-    input: {
-      margin: "0",
-      padding: "0.625rem",
-      fontSize: "1rem",
-      borderRadius: "4px",
-      border: "1px solid #ccc",
-      width: "100%",
-      height: "max-content",
-    },
-    button: {
-      background: "#FACC15",
-      border: "none",
-      borderRadius: "4px",
-      padding: "0.75rem 1.25rem",
-      width: "100%",
-      fontSize: "1rem",
-      fontWeight: 700,
-      cursor: "pointer",
-    },
-    transaction: {
-      border: "1px solid #ccc",
-      padding: "1rem",
-      cursor: "pointer",
-      borderRadius: 4,
-    },
-  };
-
   const Loading = () => (
     <div
       style={{
@@ -168,7 +141,7 @@ const SendPage: React.FC = () => {
         left: "0",
       }}
     >
-      <CircularProgress size="lg" />
+      <CircularProgress size="lg" style={{stroke: "#FACC15"}} />
       <p>Loading until your sign-up/sign-in is completed.</p>
     </div>
   );
@@ -179,10 +152,10 @@ const SendPage: React.FC = () => {
       spacing={4}
       style={{
         width: "900px",
-        maxWidth: "50%",
+        maxWidth: "90vw",
         height: "500px",
         overflowY: "scroll",
-        maxHeight: "50%",
+        maxHeight: "50vh",
         border: "1px solid #E4E4E7",
         borderRadius: 8,
         background: "white",
@@ -242,6 +215,7 @@ const SendPage: React.FC = () => {
         <Grid xs={12}>
           <Button
             loading={loading}
+            fullWidth
             onClick={handleSendClick}
             style={styles.button}
           >
