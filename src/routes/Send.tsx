@@ -154,7 +154,7 @@ const SendPage: React.FC = () => {
         width: "900px",
         maxWidth: "90vw",
         height: "500px",
-        overflowY: "scroll",
+        overflowY: "auto",
         maxHeight: "50vh",
         border: "1px solid #E4E4E7",
         borderRadius: 8,
