@@ -7,8 +7,11 @@ import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import { Button, Grid, Typography } from "@mui/joy";
 import { styles } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const SendPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     oauthClient,
     setOauthClient,
@@ -84,8 +87,11 @@ const SendPage: React.FC = () => {
 
   useEffect(() => {
     const setupBalances = async () => {
+      if (!oauthClient?.userWallet?.address) {
+        return;
+      }
       const balance = await oauthClient?.publicClient.readContract({
-        address: testTokenAddr,
+        address: testTokenAddr!,
         abi: erc20Abi,
         functionName: "balanceOf",
         args: [oauthClient?.userWallet?.address],
@@ -97,24 +103,33 @@ const SendPage: React.FC = () => {
 
   useEffect(() => {
     const waiting = async () => {
-      if (requestId !== null) {
-        console.log(requestId);
-        await oauthClient?.waitEpheAddrActivated(requestId);
-        setOauthClient(oauthClient);
-        setRequestId(null);
-        setPageState(PageState.send);
-        const newCache: OauthClientCache = {
-          userEmailAddr,
-          username,
-          userWalletAddr: oauthClient.getWalletAddress() as Address,
-          ephePrivateKey: oauthClient.getEphePrivateKey(),
-          epheAddrNonce: oauthClient.getEpheAddrNonce() as string,
-        };
-        localStorage.setItem("oauthClient", JSON.stringify(newCache));
+      if (requestId === null) {
+        console.log("something went wrong. Please try again");
       }
+
+      console.log(requestId);
+      await oauthClient?.waitEpheAddrActivated(requestId!);
+      setOauthClient(oauthClient);
+      setRequestId(null);
+      setPageState(PageState.send);
+      const newCache: OauthClientCache = {
+        userEmailAddr,
+        username,
+        userWalletAddr: oauthClient.getWalletAddress() as Address,
+        ephePrivateKey: oauthClient.getEphePrivateKey(),
+        epheAddrNonce: oauthClient.getEpheAddrNonce() as string,
+      };
+      console.log(newCache);
+      localStorage.setItem("oauthClient", JSON.stringify(newCache));
     };
     waiting();
   }, [requestId]);
+
+  const handleLogout = async () => {
+    await localStorage.removeItem("oauthClient");
+    setPageState(PageState.landing);
+    navigate("/");
+  };
 
   if (pageState !== PageState.send) {
     return (
@@ -144,6 +159,18 @@ const SendPage: React.FC = () => {
       justifyContent={"center"}
       alignItems={"center"}
     >
+      <Grid
+        xs={12}
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          width: "100vw",
+          textAlign: "end",
+        }}
+      >
+        <Button onClick={() => handleLogout()}>Logout</Button>
+      </Grid>
       <Grid
         container
         spacing={4}

@@ -38,6 +38,12 @@ const LandingPage: React.FC = () => {
     setSelectedOption(option);
   };
 
+  useEffect(() => {
+    setSelectedOption("signup");
+    setUserEmailAddr("");
+    setUsername("");
+  }, []);
+
   const handleNextClick = () => {
     setIsFilled(true);
     setPageState(PageState.waiting);
