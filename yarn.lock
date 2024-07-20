@@ -2844,10 +2844,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zk-email/oauth-sdk@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@zk-email/oauth-sdk/-/oauth-sdk-0.1.2.tgz#be42200fa03434b4970606cce724ff82acc9eb9a"
-  integrity sha512-xQqBqAcJW3QfvAOcKZmnUYekUw9t59aYyMY6Q4Qim1Z59QH3xGjDhGgdn6o03v9YKag9yGnJ//IoZL0VKuhJ8Q==
+"@zk-email/oauth-sdk@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@zk-email/oauth-sdk/-/oauth-sdk-0.1.3.tgz#d10e5eee640f14ac2d651205a2422ab6f8bbc848"
+  integrity sha512-KYzQ94WPtDZRi3O4fIGpGL5Iu7XB5e6AK4cUGcGgZj4lxxgWtqeUCIkqbYG02xh6ERKtdSl4XcGOLm+35+12ug==
   dependencies:
     "@types/axios" "^0.14.0"
     axios "^1.7.2"

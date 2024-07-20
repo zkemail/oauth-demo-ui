@@ -34,7 +34,7 @@ const SendPage: React.FC = () => {
     const baseAmount = 10n ** BigInt(decimals);
     const [balanceOfTest, setBalanceOfTest] = useState<bigint>(0n);
     const [allowanceOfTest, setAllowanceOfTest] = useState<bigint>(
-        10n * baseAmount
+        0n
     );
     const [loading, setLoading] = useState<boolean>(false);
     // const [isExecuting, setIsExecuting] = useState<boolean>(false);
@@ -94,6 +94,9 @@ const SendPage: React.FC = () => {
             if (!oauthClient?.userWallet?.address) {
                 return;
             }
+            if (pageState !== PageState.send) {
+                return;
+            }
             const balance = await oauthClient?.publicClient.readContract({
                 address: testTokenAddr!,
                 abi: erc20Abi,
@@ -101,16 +104,18 @@ const SendPage: React.FC = () => {
                 args: [oauthClient?.userWallet?.address],
             });
             setBalanceOfTest(balance);
+            const allowance = await oauthClient.getTokenAllowance(testTokenAddr);
+            setAllowanceOfTest(allowance);
         };
         setupBalances();
-    }, []);
+    }, [pageState]);
 
     useEffect(() => {
         const waiting = async () => {
             if (requestId === null) {
-                console.log("something went wrong. Please try again");
+                console.log("request id is null");
+                return;
             }
-
             console.log(requestId);
             await oauthClient?.waitEpheAddrActivated(requestId!);
             setOauthClient(oauthClient);
