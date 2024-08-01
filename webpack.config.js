@@ -1,21 +1,21 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { DefinePlugin } = require('webpack');
-const dotenv = require('dotenv');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { DefinePlugin } = require("webpack");
+const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: "./src/index.tsx",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
   },
-  mode: 'development',
+  mode: "development",
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, "public"),
     },
     // proxy: {
     //   '/api': {
@@ -43,34 +43,35 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/, // Add TypeScript support
         exclude: /node_modules/,
-        use: 'ts-loader', // Use ts-loader for TypeScript files
+        use: "ts-loader", // Use ts-loader for TypeScript files
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
         },
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.svg$/,
+        use: "file-loader", // Use url-loader for SVG files
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'], // Add .ts and .tsx extensions
-  },
-  devServer: {
-    historyApiFallback: true,
+    extensions: [".ts", ".tsx", ".js", ".jsx"], // Add .ts and .tsx extensions
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: "./public/index.html",
     }),
     new DefinePlugin({
-      'process.env': JSON.stringify(process.env)
-    })
+      "process.env": JSON.stringify(process.env),
+    }),
   ],
 };

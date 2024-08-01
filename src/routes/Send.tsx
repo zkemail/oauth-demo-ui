@@ -10,6 +10,7 @@ import { styles } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { OauthClient } from "@zk-email/oauth-sdk";
 import { baseSepolia, mainnet, base } from "viem/chains";
+import LaunchIcon from './launchIcon.svg'
 
 const SendPage: React.FC = () => {
     const navigate = useNavigate();
@@ -290,7 +291,7 @@ const SendPage: React.FC = () => {
                                                     xs={12}
                                                 >
                                                     Sent {amount} "TEST" to {to}
-                                                    <img src="./launchIcon.svg" />
+                                                    <img src={LaunchIcon} />
                                                 </Grid>
                                             </ListItem>
                                         </a>
