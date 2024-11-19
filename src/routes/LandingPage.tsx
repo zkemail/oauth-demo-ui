@@ -5,6 +5,8 @@ import { useAppState, PageState } from "../StateContext";
 import { Button, Grid, Tab, TabList, Tabs, Typography } from "@mui/joy";
 import { styles } from "./styles";
 
+const emailRegex: RegExp = /^[A-Za-z0-9!#$%&'*+=?\\-\\^_`{|}~./@]+@[A-Za-z0-9.\\-]+$/;
+
 const LandingPage: React.FC = () => {
   // const [email, setEmail] = useState<string>('');
   // const [username, setUsername] = useState<string>('');
@@ -81,9 +83,9 @@ const LandingPage: React.FC = () => {
 
   const isFormValid = () => {
     if (selectedOption === "signup") {
-      return userEmailAddr !== "" && username !== "";
+      return userEmailAddr !== "" && emailRegex.test(userEmailAddr) && username !== "" && !emailRegex.test(username);
     } else {
-      return userEmailAddr !== "";
+      return userEmailAddr !== "" && emailRegex.test(userEmailAddr);
     }
   };
 
