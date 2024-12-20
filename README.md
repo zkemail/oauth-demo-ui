@@ -9,7 +9,7 @@ npm install @zk-email/oauth-sdk
 
 ## Usage
 
-To learn more about how to integrate, check out [our OAuth docs](https://zkemail.gitbook.io/zk-email/login-with-zk-email-oauth-api).
+To learn more about how to integrate, check out [our OAuth docs](https://docs.zk.email/login-with-zk-email-oauth-api).
 
 ## Link ts-sdk
 
