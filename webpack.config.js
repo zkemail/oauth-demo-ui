@@ -17,6 +17,7 @@ module.exports = {
     static: {
       directory: path.join(__dirname, "public"),
     },
+    historyApiFallback: true,
     // proxy: {
     //   '/api': {
     //     target: process.env.REACT_APP_RELAYER_HOST,
