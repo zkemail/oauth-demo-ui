@@ -3,24 +3,9 @@ import React from "react";
 // import WaitingPage from './routes/WaitingPage';
 import LandingPage from "./routes/LandingPage";
 import SendPage from "./routes/Send";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { StateProvider } from "./StateContext";
 import { CssVarsProvider, extendTheme } from "@mui/joy/styles";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LandingPage />,
-  },
-  // {
-  //   path: "/waiting",
-  //   element: <WaitingPage />
-  // },
-  {
-    path: "/send",
-    element: <SendPage />,
-  },
-]);
 
 const theme = extendTheme({
   colorSchemes: {
@@ -49,7 +34,12 @@ const App: React.FC = () => {
     <div className="App">
       <CssVarsProvider theme={theme}>
         <StateProvider>
-          <RouterProvider router={router} />
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/send" element={<SendPage />} />
+            </Routes>
+          </HashRouter>
         </StateProvider>
       </CssVarsProvider>
     </div>
