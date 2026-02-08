@@ -155,6 +155,21 @@ const LandingPage: React.FC = () => {
         }}
       >
         <Grid xs={12}>
+          <div style={styles.deprecationBanner}>
+            This demo is deprecated and no longer maintained. Watch the latest
+            walkthrough{" "}
+            <a
+              href="https://www.youtube.com/watch?v=O1hv8gVTub8"
+              target="_blank"
+              rel="noreferrer"
+              style={styles.deprecationLink}
+            >
+              here
+            </a>
+            .
+          </div>
+        </Grid>
+        <Grid xs={12}>
           <Typography textAlign={"center"} level="h2">
             Email Oauth Demo
           </Typography>
